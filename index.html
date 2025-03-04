@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Öğrenci Listesi</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+      }
+      tr:hover {
+        background-color: #f2f2f2;
+      }
+      .justtrying {
+        font-size: 40px;
+        font-weight: bold;
+      }
+      .justtrying2 {
+        font-style: italic;
+        font-size: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Öğrenci Listesi</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>İsim</th>
+          <th>Sınıf</th>
+          <th>İşlem</th>
+        </tr>
+      </thead>
+      <tbody id="studentTable"></tbody>
+    </table>
+
+    <h3>Yeni Öğrenci Ekle</h3>
+    <input type="text" id="name" placeholder="İsim" required />
+    <input type="text" id="class" placeholder="Sınıf" required />
+    <button id="addStudent">Ekle</button>
+    <p class="justtrying"></p>
+    <p class="justtrying2"></p>
+    <p class="focus-p"></p>
+
+    <script>
+      let studentData = [
+        { name: "Ahmet", class: "10A" },
+        { name: "Zeynep", class: "11B" },
+        { name: "Mehmet", class: "9C" },
+      ];
+
+      function renderTable() {
+        $("#studentTable").empty();
+        studentData.forEach((student, index) => {
+          $("#studentTable").append(
+            `<tr data-index="${index}">
+                        <td>${student.name}</td>
+                        <td>${student.class}</td>
+                        <td><button class="delete">Sil</button></td>
+                    </tr>`
+          );
+        });
+      }
+
+      $(document).ready(function () {
+        renderTable();
+
+        $("#addStudent").click(function () {
+          let name = $("#name").val().trim();
+          let studentClass = $("#class").val().trim();
+          if (name && studentClass) {
+            studentData.push({ name, class: studentClass });
+            renderTable();
+            $("#name, #class").val("");
+          }
+        });
+
+        $(document).on("click", ".delete", function () {
+          let index = $(this).closest("tr").data("index");
+          studentData.splice(index, 1);
+          renderTable();
+        });
+
+        /*Ekstra olarak denendiler
+        $("#name").on("input", function () {
+          let inputValue = $(this).val();
+          $(".justtrying").text(inputValue);
+        });
+        $("#class").on("input", function () {
+          let inputValue = $(this).val();
+          $(".justtrying2").text(inputValue);
+        });
+        $("#name").on("focus", function () {
+          $(".focus-p").text("Name yazmaya tıklandı.");
+        });
+        $("#class").on("focus", function () {
+          $(".focus-p").text("Class yazmaya tıklandı.");
+        });
+        */
+      });
+    </script>
+  </body>
+</html>
